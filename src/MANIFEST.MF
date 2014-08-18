@@ -1,2 +1,4 @@
 Main-Class: ConvertJSONtoXML
+Class-Path: org/json/
+
 
