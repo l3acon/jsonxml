@@ -1,19 +1,18 @@
 JFLAGS = -g # -Xlint:unchecked
 JC = javac
 PCONV = com/caanes/converters
-PLIB = org/json
+PLIB = org/jml
 OUT = out
 
 .SUFFIXES: .java .class
 
 
-.java.class:
-	$(JC) $(JFLAGS) $*.java 
-
 CLASSES = \
-	ConvertJSONtoXML.java \
+	$(PLIB)/Jml.java \
+	$(PLIB)/JMLTree.java \
 	$(PCONV)/ConverterFactory.java \
 	$(PCONV)/XMLJSONConverterI.java \
+	ConvertJSONtoXML.java
 
 default: classes 
 
@@ -21,7 +20,8 @@ libs:
 	$(JC)  $(PLIB)/*.java 
 
 
-classes: libs $(CLASSES:.java=.class) 
+classes: libs 
+	$(JC) $(JFLAGS) $(CLASSES)
 
 
 jar: classes

@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-//import org.json.*;
+import org.jml.*;
 //import com.caanes.converters;
 
 public class ConvertJSONtoXML //implements XMLJSONConverterI
@@ -23,13 +23,12 @@ public class ConvertJSONtoXML //implements XMLJSONConverterI
 								buffer[i] = (char) fin.read();
 							}
 							fin.close();
+							Jml jml = new Jml();
+							jml.buildTree( new String(buffer) );
 
-							JSONObject json = new JSONObject(new String(buffer) );
-							String xml = XML.toString( json );
-
-							BufferedWriter fout = new BufferedWriter( new FileWriter( args[1] ) );
-							fout.write(xml);
-							fout.close();
+							//BufferedWriter fout = new BufferedWriter( new FileWriter( args[1] ) );
+							//fout.write(xml);
+							//fout.close();
 						}  
 						catch( IOException e)
 						{
@@ -47,6 +46,11 @@ public class ConvertJSONtoXML //implements XMLJSONConverterI
 			}
 			return;
 		}
+	public void convertJSONtoXML(File json, File xml) throws IOException 
+	{
+		return;
+	}
+
 
 	public static void PrintUsage()
 	{
