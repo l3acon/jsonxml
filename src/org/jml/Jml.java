@@ -11,7 +11,7 @@ public class Jml
 	JMLTree tjml;
 	JMLTree current;
 
-	public void Jml( )
+	public void Jml()
 	{
 		stack = new Stack<Character>();
 
@@ -39,7 +39,7 @@ public class Jml
 					// begin an object
 				case '{': 
 					field = false;
-					stack.push(new Character(w.charAt(i)));
+					stack.push(new Character('{') );
 					tjml = tjml.addChild();
 					tjml.type = "object";
 					break;
@@ -74,7 +74,7 @@ public class Jml
 			}
 
 
-			if( (char) stack.peek() == w.charAt(i) )
+			if( isPair( w.charAt(i) ))
 			{	
 					// go up
 					tjml = tjml.parent; 
@@ -103,15 +103,29 @@ public class Jml
 		return new String("string");
 	}
 
-	public char pair( char in)
+	public boolean isPair( char in)
 	{
-		if( in == '{' )
-			return '}';
-		if( in == '[')
-			return ']';
-		return in;
-	}
+		if( (char) stack.peek() == '{')
+		{
+			if( in == '}');
+					{
+					return true;
+					}
+		}
+		if( (char) stack.peek()  == '[')
 
+		{
+			if( in == ']' )
+			{
+				return true;
+			}
+		}
+		if( (char) stack.peek() == '"' && in == '"')
+		{
+			return true;
+		}
+		return false;
+	}
 }
 
 

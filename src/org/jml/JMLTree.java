@@ -19,6 +19,7 @@ public class JMLTree
 	
 	public JMLTree addChild()
 	{
+		System.out.println("This is a");
 		JMLTree t = new JMLTree();
 		this.children.add(t);
 		t.parent = this;
