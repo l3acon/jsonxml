@@ -11,7 +11,7 @@ public class JMLTree
 	public String field; 	// the data
 	
 	// only used to construct a new tree?
-	public void JMLTree()
+	public JMLTree()
 	{
 		children = new ArrayList<JMLTree>();
 		this.parent = this;
@@ -19,7 +19,6 @@ public class JMLTree
 	
 	public JMLTree addChild()
 	{
-		System.out.println("This is a");
 		JMLTree t = new JMLTree();
 		this.children.add(t);
 		t.parent = this;

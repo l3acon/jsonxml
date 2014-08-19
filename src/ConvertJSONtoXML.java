@@ -2,9 +2,9 @@ import java.util.*;
 import java.io.*;
 
 import org.jml.*;
-//import com.caanes.converters;
+import com.caanes.converters.*;
 
-public class ConvertJSONtoXML //implements XMLJSONConverterI
+public class ConvertJSONtoXML implements XMLJSONConverterI
 {
 	public static void main( String[] args)
 		{
@@ -22,6 +22,7 @@ public class ConvertJSONtoXML //implements XMLJSONConverterI
 							{
 								buffer[i] = (char) fin.read();
 							}
+							
 							fin.close();
 							Jml jml = new Jml();
 							jml.buildTree( new String(buffer) );

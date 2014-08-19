@@ -1,4 +1,4 @@
 Main-Class: ConvertJSONtoXML
-Class-Path: org/jml/
+Class-Path: org/jml/ :com/caanes/converters/
 
 

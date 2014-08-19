@@ -11,10 +11,9 @@ public class Jml
 	JMLTree tjml;
 	JMLTree current;
 
-	public void Jml()
+	public Jml()
 	{
 		stack = new Stack<Character>();
-
 		// initialize root of JMLTree
 		tjml = new JMLTree();
 	}
@@ -29,7 +28,6 @@ public class Jml
 		// main loop
 		for( int i = 0; i < w.length(); i++)
 		{
-			System.out.println(i);
 			switch( w.charAt(i) )	
 			{
 				case ':':
@@ -69,21 +67,22 @@ public class Jml
 					break;
 				default:
 				
-				System.out.println("I'm working hard");
 				break;
 			}
 
-
-			if( isPair( w.charAt(i) ))
-			{	
-					// go up
-					tjml = tjml.parent; 
-					if (stack.empty())
-					{
-						System.out.println("Input file not valid!");
-						return;
-					}
-					stack.pop();
+			if( !stack.empty() )
+			{
+				if( isPair( w.charAt(i) ))
+				{	
+						// go up
+						tjml = tjml.parent; 
+						if (stack.empty())
+						{
+							System.out.println("Input file not valid!");
+							return;
+						}
+						stack.pop();
+				}
 			}
 		}
 
