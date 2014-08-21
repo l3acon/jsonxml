@@ -15,7 +15,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 					{
 						try
 						{
-													JsonReader reader = Json.createReader(new FileReader("args[0]"));
+													JsonReader reader = Json.createReader(new FileReader(args[0]));
 
 							JsonStructure jsonst = reader.read();
 						}  
