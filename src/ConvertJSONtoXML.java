@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
+import javax.json.*;
 
-import org.jml.*;
 import com.caanes.converters.*;
 
 public class ConvertJSONtoXML implements XMLJSONConverterI
@@ -15,21 +15,9 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 					{
 						try
 						{
-							InputStream fin = new FileInputStream(args[0]);
-							int fsize = fin.available();
-							buffer = new char [fsize];
-							for( int i = 0; i < fsize; i++)
-							{
-								buffer[i] = (char) fin.read();
-							}
-							
-							fin.close();
-							Jml jml = new Jml();
-							jml.buildTree( new String(buffer) );
+													JsonReader reader = Json.createReader(new FileReader("args[0]"));
 
-							//BufferedWriter fout = new BufferedWriter( new FileWriter( args[1] ) );
-							//fout.write(xml);
-							//fout.close();
+							JsonStructure jsonst = reader.read();
 						}  
 						catch( IOException e)
 						{
