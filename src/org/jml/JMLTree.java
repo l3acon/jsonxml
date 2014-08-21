@@ -37,11 +37,10 @@ public class JMLTree
 		if ( !this.isRoot() )
 		{
 			this.parent.printTree();
+			return;
 		}
-		else
-		{
-			printSubtree();
-		}
+
+		printSubtree();
 	}
 			
 	public void printSubtree()
@@ -59,7 +58,7 @@ public class JMLTree
 		// if there are children, print them
 		if( this.children.size() > 0 )
 		{
-			for( int i = 0; i < children.size(); i ++)
+			for( int i = 2; i < children.size(); i ++)
 			{
 				children.get(i).printSubtree();
 			}
@@ -73,5 +72,4 @@ public class JMLTree
 		return;
 	}
 }
-
 

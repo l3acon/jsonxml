@@ -48,14 +48,20 @@ public class Jml
 					stack.push(new Character('['));
 					tjml = tjml.addChild();
 					tjml.type = "array";
+					break;
 
 					// some useful text
 				case  '"':
 					t = new String();
-					while( w.charAt(i) != '"' && i < w.length() )
+					while( w.charAt(++i) != '"' )
 					{
+						if(i + 2 > w.length() )
+						{
+							System.out.println("Invalid File!");
+							break;
+						}
 						t = t + w.charAt(i);
-						i++;
+						//System.out.println(t);
 					}
 					if(field)
 					{
@@ -64,7 +70,9 @@ public class Jml
 					}
 					else
 						tjml.name = t;
+					i++;
 					break;
+				
 				default:
 				
 				break;
