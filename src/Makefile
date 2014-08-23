@@ -2,7 +2,7 @@ JFLAGS = -g # -Xlint:unchecked
 JC = javac
 JAR = jar
 PCONV = com/caanes/converters
-JARS = -cp javax.json-1.0.4.jar 
+JARS = -cp jar/javax.json-1.0.4.jar 
 
 OUT = out.jar
 
@@ -21,5 +21,5 @@ jar: classes
 
 clean:
 	$(RM) *.class
-	$(RM) $(OUT).jar
+	$(RM) $(OUT)
 
