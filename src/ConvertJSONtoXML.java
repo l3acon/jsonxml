@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 import javax.json.*;
-
 import com.caanes.converters.*;
 
 public class ConvertJSONtoXML implements XMLJSONConverterI
@@ -15,8 +14,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 					{
 						try
 						{
-													JsonReader reader = Json.createReader(new FileReader(args[0]));
-
+							JsonReader reader = Json.createReader(new FileReader(args[0]));
 							JsonStructure jsonst = reader.read();
 						}  
 						catch( IOException e)
@@ -39,7 +37,6 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 	{
 		return;
 	}
-
 
 	public static void PrintUsage()
 	{

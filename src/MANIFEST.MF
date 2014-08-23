@@ -1,5 +1,5 @@
 Main-Class: ConvertJSONtoXML
-Class-Path: org/jml/ :com/caanes/converters/ :javax/json/
+Class-Path: javax.json-1.0.4.jar :com/caanes/converters/ 
 
 
 

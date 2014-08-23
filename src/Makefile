@@ -1,13 +1,10 @@
 JFLAGS = -g # -Xlint:unchecked
 JC = javac
+JAR = jar
 PCONV = com/caanes/converters
-JAXJSON = javax/json/*.class \
-		javax/json/spi/*.class \
-		javax/json/stream/*.class
-OUT = out
+JARS = -cp javax.json-1.0.4.jar 
 
-.SUFFIXES: .java .class
-
+OUT = out.jar
 
 CLASSES = \
 	$(PCONV)/ConverterFactory.java \
@@ -17,11 +14,10 @@ CLASSES = \
 default: classes 
 
 classes:
-	$(JC) $(JFLAGS) $(CLASSES) 
-
+	$(JC) $(JARS) $(JFLAGS) $(CLASSES) 
 
 jar: classes
-	jar cfm $(OUT).jar MANIFEST.MF $(CLASSES:.java=.class) $(JAXJSON)
+	$(JAR) cfm $(OUT) MANIFEST.MF $(CLASSES:.java=.class) 
 
 clean:
 	$(RM) *.class
