@@ -13,7 +13,6 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 		JsonStructure jsonst = null;
 		//JsonObject model = CreateExampleJsonObject();
 		//navigateTree(model, null);
-
 		try
 		{
 			if(args.length > 0 && args.length < 3)
@@ -50,47 +49,61 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 
 	public static void navigateTree(JsonValue tree, String key) 
 	{
-		 if (key != null)
-				System.out.print("Key " + key + ": ");
-
 		 if( tree.getValueType() == JsonValue.ValueType.OBJECT)
 		 {
-			 System.out.println("OBJECT ");
-			 JsonObject object = (JsonObject) tree;
-			 for (String name : object.keySet() )
-				 navigateTree(object.get(name), name);
-			 System.out.println(" OBJECT");
+				if(key == null)
+					System.out.println("<object>");
+				else
+					System.out.println("<object name=\"" + key + "\">");
+
+				JsonObject object = (JsonObject) tree;
+				for (String name : object.keySet() )
+					navigateTree(object.get(name), name);
+
+				System.out.println("</object>");
 		 }
 		 else if( tree.getValueType() == JsonValue.ValueType.ARRAY)
 		 {
-			 System.out.println("ARRAY ");
-			 JsonArray array = (JsonArray) tree;
-			 for(JsonValue val : array)
-				 navigateTree(val, null);
-			 System.out.println(" ARRAY");
+				if(key == null)
+					System.out.println("<array>");
+				else
+					System.out.println("<array name=\"" + key + "\">");
+
+				JsonArray array = (JsonArray) tree;
+				for (JsonValue val : array)
+					navigateTree(val, null );
+
+				System.out.println("</array>");
 		 }
 		 else if( tree.getValueType() == JsonValue.ValueType.STRING)
 		 {
-			 JsonString st = (JsonString) tree;
-			 System.out.println("STRING " + st.getString() + " STRING");
+				JsonString st = (JsonString) tree;
+				if( key != null)
+					System.out.println("<string name=\"" + key + "\">" + st.getString() + "</string>");
+				else
+					System.out.println("<string>" + st.getString() + "</string>");
 		 }
-
 		else if( tree.getValueType() == JsonValue.ValueType.NUMBER)
 		{
-				JsonNumber num = (JsonNumber) tree;
-				System.out.println("NUMBER " + num.toString() + " NUMBER");
+			JsonNumber num = (JsonNumber) tree;
+			if( key != null)
+				System.out.println("<number name=\"" + key + "\">" + num.toString() + "</number>");
+			else
+				System.out.println("<number>" + num.toString() + "</number>");
 		}
 		else if( tree.getValueType() == JsonValue.ValueType.NULL )
 		{
-			System.out.print("NULL ");
-			System.out.println(tree.getValueType().toString() );
-			System.out.print(" NULL");
+			if( key != null)
+				System.out.println("<null name=\"" + key + "\"/>" );
+			else
+				System.out.println("null array goes here");
 		}
 		else
 		{
-			System.out.print("BOOLEAN ");
-			System.out.println(tree.getValueType().toString() );
-			System.out.print(" BOOLEAN ");
+			if( key != null)
+				System.out.println("<boolean name=\"" + key + "\">" + tree.getValueType().toString() + "</boolean>");
+			else
+				System.out.println("<boolean>" + tree.getValueType().toString() + "</boolean>");
 		}
 	}
 
