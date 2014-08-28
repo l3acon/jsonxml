@@ -8,11 +8,10 @@ CONPATH = com/caanes/converters
 JARS = -cp jar/javax.json-1.0.4.jar
 
 # output format
-OUT = out.jar
+OUT = convJSONtoXML.jar
 
 # classes to be built
-CLASSES = \
-					cli.java \
+CLASSES = cli.java \
 					$(CONPATH)/ConverterFactory.java \
 					$(CONPATH)/XMLJSONConverterI.java \
 					$(CONPATH)/ConvertJSONtoXML.java
@@ -26,6 +25,6 @@ jar: classes
 	$(JAR) cfm $(OUT) MANIFEST.MF $(CLASSES:.java=.class) 
 
 clean:
-	$(RM) *.class
+	$(RM) $(CLASSES:.java=.class)
 	$(RM) $(OUT)
 
