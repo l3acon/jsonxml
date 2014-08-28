@@ -2,7 +2,7 @@ import java.io.*;
 import com.caanes.converters.*;
 
 /**
- * Class for command line execution of the JSON to XML converter.
+ * Simple class for command line execution of the JSON to XML converter.
  */
 
 public class cli 

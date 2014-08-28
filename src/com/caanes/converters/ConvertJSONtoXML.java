@@ -10,6 +10,9 @@ import javax.json.*;
 /**
  * A class for converting Json files to XML files.
  * This class impliments the XMLJSONConverterI interface.
+ * The functionality follows CaANES specification (except for the nameless 
+ * non-nested JSON entries. For some reason the library used does not 
+ * accept those for ligitimate JSON structure. 
  */
 public class ConvertJSONtoXML implements XMLJSONConverterI
 {
@@ -28,7 +31,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 
 	/**
 	 * Initializing with a JsonValue (javax.json) can be used with getXML() to 
-	 * convert without the interface.
+	 * convert without XMLJSONConverterI.
 	 */
 	public ConvertJSONtoXML(JsonValue t)
 	{
@@ -37,10 +40,9 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 	}
 
 	/**
-	 * cat concatonates the given string onto the internal JsonTree string 
-	 * strAccumulator.
+	 * cat concatonates the given string to the internal string strAccumulator.
 	 * In contrast to the built-in function (String.concatonate(String) cat is
-	 * shorter.
+	 * shorter. It also won't throw a NPE in case of null strAccumulator.
 	 */
 	private void cat(String a)
 	{
@@ -98,7 +100,6 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 		{
 			reader = Json.createReader(new FileReader(jsonFile) );
 			writer = new BufferedWriter( new FileWriter(xmlFile) );
-			tree = null;
 			try
 			{
 				tree = reader.read();
@@ -133,8 +134,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 	/**
 	 * Navigate a JsonValue tree and populate strAccumulator using CaANES 
 	 * specification for XML data.
-	 * @param t {javax.json.JsonValue} the subtree 
-	 * to navigate
+	 * @param t {javax.json.JsonValue} the subtree to navigate.
 	 * @param key {java.String} the key from parent 
 	 * node (XML name='key')
 	 * see: CaANES specification
