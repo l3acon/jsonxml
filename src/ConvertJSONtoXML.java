@@ -1,44 +1,71 @@
 import java.util.*;
 import java.lang.*;
 import java.io.*;
+import javax.json.JsonValue;
 
 import javax.json.*;
 import com.caanes.converters.*;
 
 public class ConvertJSONtoXML implements XMLJSONConverterI
 {
+	public static void log(String message)
+	{
+		System.out.println(message);
+	}
+
 	public static void main( String[] args)
 	{
 		char [] buffer;
-		JsonStructure jsonst = null;
-		//JsonObject model = CreateExampleJsonObject();
-		//navigateTree(model, null);
+		JsonReader reader = null ;
+		BufferedWriter writer = null;
+		String jsonPath = null;
+		String xmlPath  = null;
 		try
 		{
-			if(args.length > 0 && args.length < 3)
+			if(args.length == 2)
 				{
-					try
-					{
-						JsonReader reader = Json.createReader(new FileReader(args[0]));
-						jsonst = reader.read();
-					}  
-					catch( IOException e)
-					{
-						System.out.println(e.getMessage() );
-					}
+					jsonPath = args[0];
+					xmlPath = args[1];
 				}
 			else
 			{
-				PrintUsage();
+				log("Usage: converter json-file xml-file");
 			}
 		}
 		catch( IndexOutOfBoundsException e)
 		{
-			System.out.println( e.getMessage() );
+			log("Usage: converter json-file xml-file" + e.getMessage() );
 		}
-
-		navigateTree(jsonst, null);
-
+		try
+		{
+			reader = Json.createReader(new FileReader(jsonPath) );
+			writer = new BufferedWriter( new FileWriter(xmlPath) );
+			JsonTree jTree = null;
+			try
+			{
+				jTree = new JsonTree(reader.read() );
+			}
+			catch (JsonException e)
+			{
+				log("Invalid JSON file!" + e.getMessage() );
+				return;
+			}
+			String xml = jTree.getXML();
+			writer.write(xml);
+		}  
+		catch( IOException e)
+		{
+			log("IO error!" + e.getMessage() );
+		}
+		finally
+		{
+			try
+			{
+				if (writer != null)
+					writer.close();
+			}
+			catch (IOException e)  {}
+		}
 		return;
 	}
 
@@ -47,71 +74,8 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 		return;
 	}
 
-	public static void navigateTree(JsonValue tree, String key) 
-	{
-		 if( tree.getValueType() == JsonValue.ValueType.OBJECT)
-		 {
-				if(key == null)
-					System.out.println("<object>");
-				else
-					System.out.println("<object name=\"" + key + "\">");
-
-				JsonObject object = (JsonObject) tree;
-				for (String name : object.keySet() )
-					navigateTree(object.get(name), name);
-
-				System.out.println("</object>");
-		 }
-		 else if( tree.getValueType() == JsonValue.ValueType.ARRAY)
-		 {
-				if(key == null)
-					System.out.println("<array>");
-				else
-					System.out.println("<array name=\"" + key + "\">");
-
-				JsonArray array = (JsonArray) tree;
-				for (JsonValue val : array)
-					navigateTree(val, null );
-
-				System.out.println("</array>");
-		 }
-		 else if( tree.getValueType() == JsonValue.ValueType.STRING)
-		 {
-				JsonString st = (JsonString) tree;
-				if( key != null)
-					System.out.println("<string name=\"" + key + "\">" + st.getString() + "</string>");
-				else
-					System.out.println("<string>" + st.getString() + "</string>");
-		 }
-		else if( tree.getValueType() == JsonValue.ValueType.NUMBER)
-		{
-			JsonNumber num = (JsonNumber) tree;
-			if( key != null)
-				System.out.println("<number name=\"" + key + "\">" + num.toString() + "</number>");
-			else
-				System.out.println("<number>" + num.toString() + "</number>");
-		}
-		else if( tree.getValueType() == JsonValue.ValueType.NULL )
-		{
-			if( key != null)
-				System.out.println("<null name=\"" + key + "\"/>" );
-			else
-				System.out.println("null array goes here");
-		}
-		else
-		{
-			if( key != null)
-				System.out.println("<boolean name=\"" + key + "\">" + tree.getValueType().toString() + "</boolean>");
-			else
-				System.out.println("<boolean>" + tree.getValueType().toString() + "</boolean>");
-		}
-	}
-
-	public static void PrintUsage()
-	{
-		System.out.println("Usage: converter json-file xml-file");
-	}
-
+	//JsonObject model = CreateExampleJsonObject();
+	//navigateTree(model, null);
 	public static JsonObject CreateExampleJsonObject()
 	{
 		JsonObject value = Json.createObjectBuilder()
@@ -134,5 +98,4 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 		return value;
 	}
 }
-
 

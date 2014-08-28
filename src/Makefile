@@ -7,9 +7,10 @@ JARS = -cp jar/javax.json-1.0.4.jar
 OUT = out.jar
 
 CLASSES = \
-	$(PCONV)/ConverterFactory.java \
-	$(PCONV)/XMLJSONConverterI.java \
-	ConvertJSONtoXML.java
+					JsonTree.java \
+					$(PCONV)/ConverterFactory.java \
+					$(PCONV)/XMLJSONConverterI.java \
+					ConvertJSONtoXML.java
 
 default: classes 
 

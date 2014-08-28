@@ -9,9 +9,11 @@ public final class ConverterFactory {
      * {@link com.caanes.converters.XMLJSONConverterI}.
      *
      * @return {@link com.caanes.converters.XMLJSONConverterI} implementation you created.
+		 * @return {this is a good point that's going to work well
+		 *
      */
-    public static final XMLJSONConverterI createXMLJSONConverter() {
-       // Todo: Implement this method please.
+    public static final XMLJSONConverterI createXMLJSONConverter() 
+		{
         throw new UnsupportedOperationException("Please implement me!");
     }
 }
