@@ -47,7 +47,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 		if( strAccumulator != null) 
 			strAccumulator = strAccumulator + a;
 		else
-			log("strAcc not set");
+			log("strAccumulator not set");
 		return;
 	}
 
@@ -74,6 +74,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 
 	/**
 	 * Logging to System.out for debugging and error messages.
+	 * If there was an application log this should log to it.
 	 */
 	private void log(String message)
 	{
@@ -104,15 +105,18 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 			}
 			catch (JsonException e)
 			{
-				log("Invalid JSON file!" + e.getMessage() );
+				log("Cannot convert JSON file: " + e.getMessage() );
 				return;
 			}
+
+			//	convert the tree to XML and then write it to file
 			convert();
 			writer.write(strAccumulator);
 		}  
 		catch( IOException e)
 		{
-			log("IO error!" );
+			log("IO error: " + e.getMessage() );
+			throw e;
 		}
 		finally
 		{
@@ -121,7 +125,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 				if (writer != null)
 					writer.close();
 			}
-			catch (IOException e)  {}
+			catch (IOException e)  {throw e;}
 		}
 		return;
 	}
@@ -139,52 +143,55 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 	private void navigateTree(JsonValue t, String key ) 
 	{
 		//	JSON Object {} to XML <object>
+		//	(similar patterns in subsequent cases)
 		 if( t.getValueType() == JsonValue.ValueType.OBJECT)
 		{
-			 //	unnamed key
-			 //	(similar pattern in subsequent JSON array)
-				if(key == null)
-					cat("<object>");
-				// named key
-				else
-					cat("<object name=\"" + key + "\">");
 
-				JsonObject object = (JsonObject) t;
+			//	unnamed key
+			if(key == null)
+				cat("<object>");
+			// named key
+			else
+				cat("<object name=\"" + key + "\">");
 
-				//	go deeper for each sub-entry in object
-				for (String name : object.keySet() )
-					navigateTree(object.get(name), name);
+			JsonObject object = (JsonObject) t;
 
-				//	end this object
-				cat("</object>");
+			//	go deeper for each sub-entry in object
+			for (String name : object.keySet() )
+				navigateTree(object.get(name), name);
+
+			//	end this object
+			cat("</object>");
 		 }
 
 		//	JSON Array [] to XML <array>
 		else if( t.getValueType() == JsonValue.ValueType.ARRAY)
 		{
 			//	nameless string entries
-				if(key == null)
-					cat("<array>");
+			if(key == null)
+				cat("<array>");
 
-				else
-					cat("<array name=\"" + key + "\">");
+			else
+				cat("<array name=\"" + key + "\">");
 
-				JsonArray array = (JsonArray) t;
-				for (JsonValue val : array)
-					navigateTree(val, null );
+			JsonArray array = (JsonArray) t;
+			for (JsonValue val : array)
+				navigateTree(val, null );
 
-				cat("</array>");
+			cat("</array>");
 		}
 		// JSON String to XML <string>	
+		//	note: javax.json only supports nameless strings that are nested
 		else if( t.getValueType() == JsonValue.ValueType.STRING)
 		{
-				JsonString st = (JsonString) t;
-				if( key != null)
-					cat("<string name=\"" + key + "\">" + st.getString() + "</string>");
-				else
-					cat("<string>" + st.getString() + "</string>");
+			JsonString st = (JsonString) t;
+			if( key != null)
+				cat("<string name=\"" + key + "\">" + st.getString() + "</string>");
+			else
+				cat("<string>" + st.getString() + "</string>");
 		 }
 		//	JSON Number to XML <number>
+		//	note: javax.json only supports nameless numbers that are nested
 		else if( t.getValueType() == JsonValue.ValueType.NUMBER)
 		{
 			JsonNumber num = (JsonNumber) t;
@@ -194,6 +201,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 				cat("<number>" + num.toString() + "</number>");
 		}
 		//	JSON Null to XML <null>
+		//	note: javax.json only supports nameless nulls that are nested
 		else if( t.getValueType() == JsonValue.ValueType.NULL )
 		{
 			if( key != null)
@@ -201,6 +209,7 @@ public class ConvertJSONtoXML implements XMLJSONConverterI
 			else
 				cat("<null>" + key + "\">" + "</null>");
 		}
+		//	JSON Boolean to XML <boolean>
 		else
 		{
 			if( key != null)
