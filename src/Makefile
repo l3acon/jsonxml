@@ -1,16 +1,21 @@
-JFLAGS = -g # -Xlint:unchecked
+JFLAGS = -g 
 JC = javac
 JAR = jar
-PCONV = com/caanes/converters
-JARS = -cp jar/javax.json-1.0.4.jar 
+# main converter directory
+CONPATH = com/caanes/converters
 
+# set build class-path  to include JSON library jar
+JARS = -cp jar/javax.json-1.0.4.jar
+
+# output format
 OUT = out.jar
 
+# classes to be built
 CLASSES = \
-					JsonTree.java \
-					$(PCONV)/ConverterFactory.java \
-					$(PCONV)/XMLJSONConverterI.java \
-					ConvertJSONtoXML.java
+					cli.java \
+					$(CONPATH)/ConverterFactory.java \
+					$(CONPATH)/XMLJSONConverterI.java \
+					$(CONPATH)/ConvertJSONtoXML.java
 
 default: classes 
 

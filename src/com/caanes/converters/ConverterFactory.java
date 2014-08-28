@@ -1,4 +1,5 @@
 package com.caanes.converters;
+
 /**
  * Factory class for creating instances of {@link XMLJSONConverterI}.
  */
@@ -14,6 +15,6 @@ public final class ConverterFactory {
      */
     public static final XMLJSONConverterI createXMLJSONConverter() 
 		{
-        throw new UnsupportedOperationException("Please implement me!");
+			return new ConvertJSONtoXML();
     }
 }
